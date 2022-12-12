@@ -1,0 +1,13 @@
+.app {
+
+  background: url("../img/app-background.jpg") top center no-repeat;
+}
+.app__block {
+  background: rgba(255, 255, 255, 0.87);
+  border: 1px solid #F5EEFF;
+  box-shadow: 0px 0px 16px rgba(206, 162, 249, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+}
+
+/*# sourceMappingURL=app.css.map */

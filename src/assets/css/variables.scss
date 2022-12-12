@@ -1,0 +1,11 @@
+$colors: (
+        pink: #fc83c6,
+        blue: #60cee9,
+        darkblue: #6186fb,
+);
+
+:export {
+  @each $key, $value in $colors {
+    #{$key}: #{$value};
+  }
+}

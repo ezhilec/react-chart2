@@ -1,0 +1,181 @@
+@use "sass:map";
+
+body, html {
+  height: 100%;
+}
+
+.app {
+  font-family: Roboto, sans-serif;
+  background: url('../img/app-background.jpg') top left no-repeat;
+  background-size: contain;
+  padding: 25px 15px;
+  height: 100%;
+  font-weight: 400;
+  box-sizing: border-box;
+  // todo delete
+  width: 390px;
+
+  &__block {
+    background: rgba(255, 255, 255, 0.87);
+    border: 1px solid #F5EEFF;
+    box-shadow: 0 0 16px rgba(206, 162, 249, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+}
+
+.filters {
+  z-index: 2;
+  &__label {
+    display: block;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 9px;
+  }
+
+  &__date-input-wrap {
+    display: flex;
+  }
+
+  &__input {
+    height: 36px;
+    border: 1px solid #CCA1FB;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  &__date-input {
+    flex-grow: 1;
+    text-align: center;
+    width: 100%;
+    .react-daterange-picker__wrapper {
+      border: none;
+      justify-content: center;
+    }
+    .react-daterange-picker__calendar {
+      width: 100%;
+      max-width: 350px;
+    }
+    .react-daterange-picker__inputGroup {
+      flex-grow: 0;
+    }
+    .react-daterange-picker__inputGroup__input:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__date-submit {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #C99EFD 0%, #FFD2BF 100%);
+    box-shadow: 0 0 5px #CDA2F9;
+    border-radius: 4px;
+    display: flex;
+    margin-left: 16px;
+    cursor: pointer;
+  }
+
+  &__date-submit-icon {
+    width: 36px;
+    height: 36px;
+    padding: 7px;
+    box-sizing: border-box;
+    background: url('../img/submit.svg') center center no-repeat;
+  }
+
+  &__types {
+    margin-top: 16px;
+    margin-left: -3px;
+    margin-right: -3px;
+    margin-bottom: -3px;
+  }
+
+  &__types-item {
+    padding: 4px 8px;
+    border: 1px solid #2AC34C;
+    border-radius: 15px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 8px;
+    display: inline-block;
+    font-size: .935rem;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  @each $name, $color in $colors {
+    &__types-item_#{$name} {
+      border-color: $color;
+      color: $color;
+    }
+
+    #{&}__types-item_#{$name}#{&}__types-item_active {
+      background-color: $color;
+      color: #ffffff;
+    }
+  }
+}
+
+.chart {
+  z-index: 1;
+  min-height: 250px;
+  padding: 10px;
+
+  &_empty {
+    text-align: center;
+    font-size: 0.935rem;
+  }
+}
+
+.react-daterange-picker {
+  &__inputGroup__input::selection {
+    background: #ffffff;
+  }
+}
+
+.react-calendar {
+  font-family: inherit;
+  border: none;
+  box-shadow: 0 0 5px #CDA2F9;
+  border-radius: 4px;
+
+  :where(abbr[title]) {
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  &__navigation button {
+    min-width: 35px;
+  }
+
+  &__navigation button {
+    font-family: inherit;
+  }
+
+  &__month-view__weekdays {
+    font-weight: 400;
+  }
+
+  &__tile {
+    font-family: inherit;
+  }
+
+  &__tile--hasActive {
+    background: map.get($colors, darkblue);
+  }
+  &__tile--active {
+    background: lighten(map.get($colors, darkblue), 15);
+  }
+
+  &__tile--active:enabled:hover,
+  &__tile--active:enabled:focus {
+    background: map.get($colors, darkblue);
+  }
+
+  &__month-view__days__day--weekend {
+    color: darken(map.get($colors, pink), 30);
+  }
+}

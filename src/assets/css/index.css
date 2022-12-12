@@ -1,0 +1,193 @@
+@import-normalize;
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Regular.eot");
+  src: local("Roboto"), local("../fonts/Roboto-Regular"), url("../fonts/Roboto-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/Roboto-Regular.woff") format("woff"), url("../fonts/Roboto-Regular.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Light.eot");
+  src: local("Roboto Light"), local("../fonts/Roboto-Light"), url("../fonts/Roboto-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/Roboto-Light.woff") format("woff"), url("../fonts/Roboto-Light.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+:export {
+  pink: #fc83c6;
+  blue: #60cee9;
+  darkblue: #6186fb;
+}
+
+body, html {
+  height: 100%;
+}
+
+.app {
+  font-family: Roboto, sans-serif;
+  background: url("../img/app-background.jpg") top left no-repeat;
+  background-size: contain;
+  padding: 25px 15px;
+  height: 100%;
+  font-weight: 400;
+  box-sizing: border-box;
+  width: 390px;
+}
+.app__block {
+  background: rgba(255, 255, 255, 0.87);
+  border: 1px solid #F5EEFF;
+  box-shadow: 0 0 16px rgba(206, 162, 249, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.filters {
+  z-index: 2;
+}
+.filters__label {
+  display: block;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 9px;
+}
+.filters__date-input-wrap {
+  display: flex;
+}
+.filters__input {
+  height: 36px;
+  border: 1px solid #CCA1FB;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.filters__date-input {
+  flex-grow: 1;
+  text-align: center;
+  width: 100%;
+}
+.filters__date-input .react-daterange-picker__wrapper {
+  border: none;
+  justify-content: center;
+}
+.filters__date-input .react-daterange-picker__calendar {
+  width: 100%;
+  max-width: 350px;
+}
+.filters__date-input .react-daterange-picker__inputGroup {
+  flex-grow: 0;
+}
+.filters__date-input .react-daterange-picker__inputGroup__input:focus-visible {
+  outline: none;
+}
+.filters__date-submit {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #C99EFD 0%, #FFD2BF 100%);
+  box-shadow: 0 0 5px #CDA2F9;
+  border-radius: 4px;
+  display: flex;
+  margin-left: 16px;
+  cursor: pointer;
+}
+.filters__date-submit-icon {
+  width: 36px;
+  height: 36px;
+  padding: 7px;
+  box-sizing: border-box;
+  background: url("../img/submit.svg") center center no-repeat;
+}
+.filters__types {
+  margin-top: 16px;
+  margin-left: -3px;
+  margin-right: -3px;
+  margin-bottom: -3px;
+}
+.filters__types-item {
+  padding: 4px 8px;
+  border: 1px solid #2AC34C;
+  border-radius: 15px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 8px;
+  display: inline-block;
+  font-size: 0.935rem;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.filters__types-item_pink {
+  border-color: #fc83c6;
+  color: #fc83c6;
+}
+.filters .filters__types-item_pink.filters__types-item_active {
+  background-color: #fc83c6;
+  color: #ffffff;
+}
+.filters__types-item_blue {
+  border-color: #60cee9;
+  color: #60cee9;
+}
+.filters .filters__types-item_blue.filters__types-item_active {
+  background-color: #60cee9;
+  color: #ffffff;
+}
+.filters__types-item_darkblue {
+  border-color: #6186fb;
+  color: #6186fb;
+}
+.filters .filters__types-item_darkblue.filters__types-item_active {
+  background-color: #6186fb;
+  color: #ffffff;
+}
+
+.chart {
+  z-index: 1;
+  min-height: 250px;
+  padding: 10px;
+}
+.chart_empty {
+  text-align: center;
+  font-size: 0.935rem;
+}
+
+.react-daterange-picker__inputGroup__input::selection {
+  background: #ffffff;
+}
+
+.react-calendar {
+  font-family: inherit;
+  border: none;
+  box-shadow: 0 0 5px #CDA2F9;
+  border-radius: 4px;
+}
+.react-calendar :where(abbr[title]) {
+  text-decoration: none;
+  font-weight: bold;
+}
+.react-calendar__navigation button {
+  min-width: 35px;
+}
+.react-calendar__navigation button {
+  font-family: inherit;
+}
+.react-calendar__month-view__weekdays {
+  font-weight: 400;
+}
+.react-calendar__tile {
+  font-family: inherit;
+}
+.react-calendar__tile--hasActive {
+  background: #6186fb;
+}
+.react-calendar__tile--active {
+  background: #acbffd;
+}
+.react-calendar__tile--active:enabled:hover, .react-calendar__tile--active:enabled:focus {
+  background: #6186fb;
+}
+.react-calendar__month-view__days__day--weekend {
+  color: #e1057f;
+}
+
+/*# sourceMappingURL=index.css.map */
