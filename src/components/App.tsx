@@ -13,7 +13,6 @@ import {
 import {Line} from 'react-chartjs-2'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
 import 'chartjs-adapter-moment'
-import colors from '../assets/css/variables.scss'
 import axios from "axios"
 import * as moment from 'moment'
 import 'moment/locale/ru'
