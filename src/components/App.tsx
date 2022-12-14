@@ -36,6 +36,7 @@ export const chartOptions = {
         x: {
             type: 'time' as const,
             time: {
+                tooltipFormat: 'MM.DD.YYYY',
                 unit: 'day' as const,
                 displayFormats: {
                     day: 'DD.MM'
@@ -55,16 +56,19 @@ const types = [
         slug: 'stress',
         name: 'Тревога',
         color: 'pink',
+        colorHex: '#fc83c6'
     },
     {
         slug: 'mood',
         name: 'Настроение',
-        color: 'blue'
+        color: 'blue',
+        colorHex: '#60cee9'
     },
     {
         slug: 'productivity',
         name: 'Продуктивность',
-        color: 'darkblue'
+        color: 'darkblue',
+        colorHex: '#6186fb'
     }
 ]
 
@@ -77,6 +81,12 @@ interface preparedStatisticsData {
     stress: string,
     productivity: string,
     mood: string
+}
+
+declare global {
+    interface Window {
+        Telegram:any;
+    }
 }
 
 function App() {
@@ -104,14 +114,37 @@ function App() {
     }, [statistic, selectedTypes])
 
     const defineUser = (): void => {
-        const search: string = window.location.search
-        const params: any = new URLSearchParams(search)
-        const userId: number = parseInt(params.get('user'))
+        let userId = getUserFromTelegram()
+        if (!userId) {
+            userId = getUserFromUrl()
+        }
+
         if (userId) {
             setUserId(userId)
         } else {
             setError('Пользователь не найден')
         }
+    }
+
+    const getUserFromUrl = (): number | null => {
+        const search: string = window.location.search
+        const params: any = new URLSearchParams(search)
+
+        if (!params.get('user')) {
+            return null
+        }
+        return parseInt(params.get('user'))
+    }
+
+    const getUserFromTelegram = (): number | null => {
+        if (typeof window.Telegram === 'undefined') {
+            return null
+        }
+       const tg = window.Telegram.WebApp;
+        if (!tg.initDataUnsafe.user) {
+            return null
+        }
+       return tg.initDataUnsafe.user.id || null
     }
 
     const handleDateChange = (range: Array<string | Date>): void => {
@@ -167,10 +200,10 @@ function App() {
         const datasets: ChartDataset<'line'>[] = types
             .filter(type => selectedTypes.includes(type.slug))
             .map(type => {
-                const a: ChartDataset<'line'> = {
+                const item: ChartDataset<'line'> = {
                     label: type.name,
-                    borderColor: colors[type.color],
-                    backgroundColor: colors[type.color],
+                    borderColor: type.colorHex,
+                    backgroundColor: type.colorHex,
                     data: statistic as DefaultDataPoint<any>,
                     parsing: {
                         xAxisKey: 'date' as const,
@@ -178,7 +211,7 @@ function App() {
                     }
                 }
                 
-                return a
+                return item
             })
 
         return {
