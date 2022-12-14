@@ -1,6 +1,6 @@
 @use "sass:map";
 
-body, html {
+body, html, #root {
   height: 100%;
 }
 
@@ -163,6 +163,10 @@ body, html {
 
   &__navigation button {
     font-family: inherit;
+  }
+
+  &__navigation__arrow {
+    font-size: 1.4rem;
   }
 
   &__month-view__weekdays {
