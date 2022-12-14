@@ -56,8 +56,8 @@ body, html {
       justify-content: center;
     }
     .react-daterange-picker__calendar {
-      width: 100%;
-      max-width: 350px;
+      width: calc(100% + 36px + 16px);
+      max-width: 500px;
     }
     .react-daterange-picker__inputGroup {
       flex-grow: 0;
@@ -150,6 +150,7 @@ body, html {
   border: none;
   box-shadow: 0 0 5px #CDA2F9;
   border-radius: 4px;
+  width: 100%;
 
   :where(abbr[title]) {
     text-decoration: none;
