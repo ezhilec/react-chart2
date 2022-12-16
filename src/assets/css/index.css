@@ -1,25 +1,11 @@
 @import-normalize;
-@font-face {
-  font-family: "Roboto";
-  src: url("../fonts/Roboto-Regular.eot");
-  src: local("Roboto"), local("../fonts/Roboto-Regular"), url("../fonts/Roboto-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/Roboto-Regular.woff") format("woff"), url("../fonts/Roboto-Regular.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Roboto";
-  src: url("../fonts/Roboto-Light.eot");
-  src: local("Roboto Light"), local("../fonts/Roboto-Light"), url("../fonts/Roboto-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/Roboto-Light.woff") format("woff"), url("../fonts/Roboto-Light.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-}
 :export {
   pink: #fc83c6;
   blue: #60cee9;
   darkblue: #6186fb;
 }
 
-body, html {
+body, html, #root {
   height: 100%;
 }
 
@@ -29,7 +15,7 @@ body, html {
   background-size: contain;
   padding: 25px 15px;
   height: 100%;
-  font-weight: 400;
+  font-weight: 200;
   box-sizing: border-box;
 }
 .app__block {
@@ -71,8 +57,8 @@ body, html {
   justify-content: center;
 }
 .filters__date-input .react-daterange-picker__calendar {
-  width: 100%;
-  max-width: 350px;
+  width: calc(100% + 36px + 16px);
+  max-width: 500px;
 }
 .filters__date-input .react-daterange-picker__inputGroup {
   flex-grow: 0;
@@ -115,6 +101,11 @@ body, html {
   box-sizing: border-box;
   cursor: pointer;
 }
+@media screen and (max-width: 375px) {
+  .filters__types-item {
+    padding: 4px 4px;
+  }
+}
 .filters__types-item_pink {
   border-color: #fc83c6;
   color: #fc83c6;
@@ -150,8 +141,11 @@ body, html {
   font-size: 0.935rem;
 }
 
-.react-daterange-picker__inputGroup__input::selection {
-  background: #ffffff;
+.react-daterange-picker input {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }
 
 .react-calendar {
@@ -159,6 +153,7 @@ body, html {
   border: none;
   box-shadow: 0 0 5px #CDA2F9;
   border-radius: 4px;
+  width: 100%;
 }
 .react-calendar :where(abbr[title]) {
   text-decoration: none;
@@ -170,6 +165,9 @@ body, html {
 .react-calendar__navigation button {
   font-family: inherit;
 }
+.react-calendar__navigation__arrow {
+  font-size: 1.4rem;
+}
 .react-calendar__month-view__weekdays {
   font-weight: 400;
 }
@@ -178,6 +176,7 @@ body, html {
 }
 .react-calendar__tile--hasActive {
   background: #6186fb;
+  color: #ffffff;
 }
 .react-calendar__tile--active {
   background: #acbffd;
