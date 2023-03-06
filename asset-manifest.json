@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/react-chart/static/css/main.c9645bc5.css",
+    "main.js": "/react-chart/static/js/main.584b2244.js",
+    "static/media/submit.svg": "/react-chart/static/media/submit.028880192ef12a143fec.svg",
+    "index.html": "/react-chart/index.html",
+    "main.c9645bc5.css.map": "/react-chart/static/css/main.c9645bc5.css.map",
+    "main.584b2244.js.map": "/react-chart/static/js/main.584b2244.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c9645bc5.css",
+    "static/js/main.584b2244.js"
+  ]
+}
