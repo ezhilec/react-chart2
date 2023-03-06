@@ -32,7 +32,7 @@ ChartJS.register(
 
 const defaultShowDays: number = 7
 
-const statisticUrl: string = "http://catsbutton.herokuapp.com/api/statements/"
+const statisticUrl: string = "https://catsbutton.herokuapp.com/api/statements/"
 
 interface UserStatmentsObjectData {
     [key: string]: UserStatmentsData[]
@@ -234,7 +234,6 @@ function App() {
 
     const setStatisticFromResponse = (response: responseData) => {
         setTypes(prepareTypes(response.statement_types, response.visibility_settings))
-        console.log(111, types)
         setSelectedTypes(types.map(item => item.id))
         setStatistic(prepareStatistics(response.user_statments))
     }
