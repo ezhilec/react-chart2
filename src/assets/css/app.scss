@@ -41,8 +41,8 @@ body, html, #root {
   }
 
   &__input {
-    height: 36px;
-    border: 1px solid #CCA1FB;
+    min-height: 36px;
+    border: 1px solid #CCA1FB !important;
     border-radius: 4px;
     box-sizing: border-box;
   }
@@ -88,9 +88,6 @@ body, html, #root {
 
   &__types {
     margin-top: 16px;
-    margin-left: -3px;
-    margin-right: -3px;
-    margin-bottom: -3px;
   }
 
   &__types-item {
@@ -112,17 +109,17 @@ body, html, #root {
     }
   }
 
-  @each $name, $color in $colors {
-    &__types-item_#{$name} {
-      border-color: $color;
-      color: $color;
-    }
-
-    #{&}__types-item_#{$name}#{&}__types-item_active {
-      background-color: $color;
-      color: #ffffff;
-    }
-  }
+  //@each $name, $color in $colors {
+  //  &__types-item_#{$name} {
+  //    border-color: $color;
+  //    color: $color;
+  //  }
+  //
+  //  #{&}__types-item_#{$name}#{&}__types-item_active {
+  //    background-color: $color;
+  //    color: #ffffff;
+  //  }
+  //}
 }
 
 .chart {

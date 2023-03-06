@@ -42,8 +42,8 @@ body, html, #root {
   display: flex;
 }
 .filters__input {
-  height: 36px;
-  border: 1px solid #CCA1FB;
+  min-height: 36px;
+  border: 1px solid #CCA1FB !important;
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -85,9 +85,6 @@ body, html, #root {
 }
 .filters__types {
   margin-top: 16px;
-  margin-left: -3px;
-  margin-right: -3px;
-  margin-bottom: -3px;
 }
 .filters__types-item {
   padding: 4px 8px;
@@ -105,30 +102,6 @@ body, html, #root {
   .filters__types-item {
     padding: 4px 4px;
   }
-}
-.filters__types-item_pink {
-  border-color: #fc83c6;
-  color: #fc83c6;
-}
-.filters .filters__types-item_pink.filters__types-item_active {
-  background-color: #fc83c6;
-  color: #ffffff;
-}
-.filters__types-item_blue {
-  border-color: #60cee9;
-  color: #60cee9;
-}
-.filters .filters__types-item_blue.filters__types-item_active {
-  background-color: #60cee9;
-  color: #ffffff;
-}
-.filters__types-item_darkblue {
-  border-color: #6186fb;
-  color: #6186fb;
-}
-.filters .filters__types-item_darkblue.filters__types-item_active {
-  background-color: #6186fb;
-  color: #ffffff;
 }
 
 .chart {
