@@ -93,11 +93,10 @@ body, html, #root {
   &__types-item {
     padding: 4px 8px;
     border: 1px solid #2AC34C;
-    border-radius: 15px;
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-bottom: 8px;
-    display: inline-block;
+    border-radius: 15px !important;
+    margin-left: 3px !important;
+    margin-right: 3px !important;
+    margin-bottom: 8px !important;
     font-size: .935rem;
     box-sizing: border-box;
     cursor: pointer;
