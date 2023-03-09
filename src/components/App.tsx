@@ -259,8 +259,7 @@ function App() {
                 "date_to": dateRange[1]
             }
         }).then(response => {
-            console.log(111,response.data, response.data.length)
-            if (response.data.length) {
+            if (Object.keys(response.data).length) {
                 setStatisticFromResponse(response.data)
             } else {
                 setError('Статистики за период нет')
