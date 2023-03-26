@@ -3,17 +3,16 @@ import Select, {StylesConfig} from "react-select";
 import chroma from 'chroma-js';
 
 export interface TypesData {
-    is_binary: boolean;
-    id: number,
+    axis_type: string;
+    id: string,
     name: string,
     color: string
 }
 
 interface TypesInputProps {
     types: TypesData[],
-    selectedTypes: Array<number>
+    selectedTypes: Array<string>
     handleSelectedTypesChange: (params: any) => any,
-
 }
 
 const colourStyles: StylesConfig<TypesData, true> = {
@@ -78,8 +77,8 @@ function TypesInput(props: TypesInputProps) {
     return <Select
         isMulti={true}
         onChange={props.handleSelectedTypesChange}
-        getOptionLabel={(vehicle: TypesData) => vehicle.name}
-        getOptionValue={(vehicle: TypesData) => vehicle.id.toString()}
+        getOptionLabel={(item: TypesData) => item.name}
+        getOptionValue={(item: TypesData) => item.id.toString()}
         options={props.types}
         value={props.types.filter(item => props.selectedTypes.includes(item.id))}
         isClearable={false}

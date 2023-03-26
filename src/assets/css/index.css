@@ -5,13 +5,17 @@
   darkblue: #6186fb;
 }
 
+:root {
+  color-scheme: light only;
+}
+
 body, html, #root {
   height: 100%;
 }
 
 .app {
   font-family: Roboto, sans-serif;
-  background: url("../img/app-background.jpg") top left no-repeat;
+  background: #fff url("../img/app-background.jpg") no-repeat top left;
   background-size: contain;
   padding: 25px 15px;
   height: 100%;
@@ -158,6 +162,10 @@ body, html, #root {
 }
 .react-calendar__month-view__days__day--weekend {
   color: #e1057f;
+}
+
+.notes {
+  padding-bottom: 20px;
 }
 
 /*# sourceMappingURL=index.css.map */

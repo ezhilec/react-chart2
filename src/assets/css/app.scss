@@ -1,12 +1,16 @@
 @use "sass:map";
 
+:root {
+  color-scheme: light only;
+}
+
 body, html, #root {
   height: 100%;
 }
 
 .app {
   font-family: Roboto, sans-serif;
-  background: url('../img/app-background.jpg') top left no-repeat;
+  background: #fff url('../img/app-background.jpg') no-repeat top left;
   background-size: contain;
   padding: 25px 15px;
   height: 100%;
@@ -107,18 +111,6 @@ body, html, #root {
       padding: 4px 4px;
     }
   }
-
-  //@each $name, $color in $colors {
-  //  &__types-item_#{$name} {
-  //    border-color: $color;
-  //    color: $color;
-  //  }
-  //
-  //  #{&}__types-item_#{$name}#{&}__types-item_active {
-  //    background-color: $color;
-  //    color: #ffffff;
-  //  }
-  //}
 }
 
 .chart {
@@ -189,4 +181,8 @@ body, html, #root {
   &__month-view__days__day--weekend {
     color: darken(map.get($colors, pink), 30);
   }
+}
+
+.notes {
+  padding-bottom: 20px;
 }
