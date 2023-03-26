@@ -33,7 +33,6 @@ function Chart(props: ChartProps) {
         }
     }
 
-    // console.log(111, props.chartData)
     if (props.chartData && props.chartData.datasets.some(item => item.yAxisID === 'y')) {
         scales.y = {
             type: 'linear' as const,
