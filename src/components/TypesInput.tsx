@@ -16,7 +16,7 @@ interface TypesInputProps {
 }
 
 const colourStyles: StylesConfig<TypesData, true> = {
-    control: (styles) => ({...styles, backgroundColor: 'white'}),
+    control: (styles) => ({...styles, backgroundColor: 'white', boxShadow: 'none'}),
     option: (styles, {data, isDisabled, isFocused, isSelected}) => {
         const color = chroma(data.color);
         return {
@@ -83,6 +83,7 @@ function TypesInput(props: TypesInputProps) {
         value={props.types.filter(item => props.selectedTypes.includes(item.id))}
         isClearable={false}
         backspaceRemovesValue={true}
+        isSearchable={false}
         styles={colourStyles}
         classNames={{
             control: () => 'filters__input filters__types',
