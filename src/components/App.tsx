@@ -20,6 +20,7 @@ import stc from 'string-to-color'
 import Chart from './Chart'
 import DateInput from './DateInput'
 import TypesInput, {TypesData} from './TypesInput'
+import slug from 'slug'
 
 moment.locale('ru')
 
@@ -78,18 +79,6 @@ interface StatementTypesData {
     type_id: string,
     name: string,
     color: string,
-    axis_type: string
-}
-
-interface CustomStatementTypesData {
-    id: number,
-    name: string,
-    axis_type: string
-}
-
-interface BinaryStatementTypesData {
-    type_id: number,
-    name: string,
     axis_type: string
 }
 
@@ -244,25 +233,27 @@ function App() {
             })
     }
 
-    const prepareCustomStatementsTypes = (statementTypes: CustomStatementTypesData[]): TypesData[] => {
+    const prepareCustomStatementsTypes = (statementTypes: string[]): TypesData[] => {
         return statementTypes
+            .filter(item => item)
             .map(item => {
                 return {
-                    id: 'custom_' + item['id'],
-                    name: item['name'],
-                    color: stc(item['name'] + ' foo'),
+                    id: 'custom_' + slug(item),
+                    name: item,
+                    color: stc(slug(item) + ' foo'),
                     axis_type: 'y'
                 }
             })
     }
 
-    const prepareBinaryStatementsTypes = (statementTypes: BinaryStatementTypesData[]): TypesData[] => {
+    const prepareBinaryStatementsTypes = (statementTypes: string[]): TypesData[] => {
         return statementTypes
+            .filter(item => item)
             .map(item => {
                 return {
-                    id: 'binary_' + item['type_id'],
-                    name: item['name'],
-                    color: stc(item['name'] + ' bar'),
+                    id: 'binary_' + slug(item),
+                    name: item,
+                    color: stc(slug(item) + ' bar'),
                     axis_type: 'binary'
                 }
             })
@@ -301,7 +292,7 @@ function App() {
             value.forEach(item => {
                 result.push({
                     date: new Date(date),
-                    type_id: 'custom_' + item.costume_state_id,
+                    type_id: 'custom_' + slug(item.name),
                     estimation: item.estimation
                 })
             })
@@ -317,7 +308,7 @@ function App() {
             value.forEach(item => {
                 result.push({
                     date: new Date(date),
-                    type_id: 'binary_' + item.type_id,
+                    type_id: 'binary_' + slug(item.name),
                     estimation: item.answer ? 1 : 0
                 })
             })
@@ -366,12 +357,12 @@ function App() {
                 }
 
                 if (Object.keys(customStatements.data).length) {
-                    statementsTypes = statementsTypes.concat(prepareCustomStatementsTypes(customStatements.data.costume_statements_types))
+                    statementsTypes = statementsTypes.concat(prepareCustomStatementsTypes(customStatements.data.costume_statements_names))
                     userStatments = userStatments.concat(prepareCustomStatistics(customStatements.data.user_costume_statments))
                 }
 
                 if (Object.keys(binaryStatements.data).length) {
-                    statementsTypes = statementsTypes.concat(prepareBinaryStatementsTypes(binaryStatements.data.binary_answer_types))
+                    statementsTypes = statementsTypes.concat(prepareBinaryStatementsTypes(binaryStatements.data.binary_answer_names))
                     userStatments = userStatments.concat(prepareBinaryStatistics(binaryStatements.data.binary_answer))
                 }
 
@@ -434,7 +425,7 @@ function App() {
             {selectedDate !== null &&
               <div className={'notes'}>
                 <h4>Заметки за {moment(selectedDate).format('DD.MM.YYYY')}</h4>
-                {notes[selectedDate].map((item: string) => <p>{item}</p>)}
+                {notes[selectedDate] && notes[selectedDate].map((item: string) => <p>{item}</p>)}
               </div>
             }
         </div>
