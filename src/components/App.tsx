@@ -273,9 +273,9 @@ function App() {
         const result: StatisticsData[] = []
         Object.entries(userStatements).forEach((entry) => {
             const [date, value] = entry;
-            value.forEach(item => {
+            value.filter(item => item.name).forEach(item => {
                 result.push({
-                    date: new Date(date),
+                    date: new Date(new Date(date).setHours(0,0,0,0)),
                     type_id: 'basic_' + item.type_id,
                     estimation: item.estimation
                 })
@@ -289,9 +289,9 @@ function App() {
         const result: StatisticsData[] = []
         Object.entries(userStatements).forEach((entry) => {
             const [date, value] = entry;
-            value.forEach(item => {
+            value.filter(item => item.name).forEach(item => {
                 result.push({
-                    date: new Date(date),
+                    date: new Date(new Date(date).setHours(0,0,0,0)),
                     type_id: 'custom_' + slug(item.name),
                     estimation: item.estimation
                 })
@@ -305,9 +305,9 @@ function App() {
         const result: StatisticsData[] = []
         Object.entries(userStatements).forEach((entry) => {
             const [date, value] = entry;
-            value.forEach(item => {
+            value.filter(item => item.name).forEach(item => {
                 result.push({
-                    date: new Date(date),
+                    date: new Date(new Date(date).setHours(0,0,0,0)),
                     type_id: 'binary_' + slug(item.name),
                     estimation: item.answer ? 1 : 0
                 })
@@ -322,7 +322,7 @@ function App() {
         Object.entries(notes).forEach((entry) => {
             const [date, value] = entry;
             result.push({
-                date: new Date(date),
+                date: new Date(new Date(date).setHours(0,0,0,0)),
                 type_id: 'note',
                 estimation: value.length,
             })
@@ -342,8 +342,8 @@ function App() {
 
         axios.all(urls.map((endpoint) => axios.get(endpoint + userId, {
             params: {
-                "date_from": dateRange[0],
-                "date_to": dateRange[1]
+                "date_from": moment(dateRange[0]).format('YYYY-MM-D'),
+                "date_to": moment(dateRange[1]).format('YYYY-MM-D')
             }
         })))
             .then(axios.spread((statements, customStatements, binaryStatements, dairyNotes) => {
@@ -380,7 +380,10 @@ function App() {
                 }
 
                 if (userStatments.length) {
-                    setTypes(statementsTypes)
+                    const existingStatementTypes = statementsTypes
+                        .filter(type => userStatments.map(statement => statement.type_id).includes(type.id))
+
+                    setTypes(existingStatementTypes)
                     setStatistic(userStatments)
                 } else {
                     setError('Статистики за период нет')

@@ -27,9 +27,9 @@ function Chart(props: ChartProps) {
                 tooltipFormat: 'DD.MM.YYYY',
                 unit: 'day' as const,
                 displayFormats: {
-                    day: 'DD.MM'
+                    day: 'DD.MM',
                 }
-            }
+            },
         }
     }
 
@@ -90,7 +90,9 @@ function Chart(props: ChartProps) {
             tooltip: {
                 callbacks: {
                     label: function (context: any) {
-                        return context.raw.estimation || '';
+                        return context.raw.estimation
+                            ? context.dataset.label + ': ' + context.raw.estimation
+                            : '';
                     }
                 }
             }
