@@ -119,10 +119,6 @@ function App() {
         }
     }, [statistic, selectedTypes])
 
-    useEffect(() => {
-        setSelectedTypes(types.map(item => item.id))
-    }, [types])
-
     const defineUser = (): void => {
         let userId = getUserFromTelegram()
         if (!userId) {
@@ -382,8 +378,10 @@ function App() {
                 if (userStatments.length) {
                     const existingStatementTypes = statementsTypes
                         .filter(type => userStatments.map(statement => statement.type_id).includes(type.id))
+                        .map(item => item.id)
 
-                    setTypes(existingStatementTypes)
+                    setTypes(statementsTypes)
+                    setSelectedTypes(existingStatementTypes)
                     setStatistic(userStatments)
                 } else {
                     setError('Статистики за период нет')
