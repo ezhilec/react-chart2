@@ -187,22 +187,23 @@ function App() {
             .filter(type => selectedTypes.includes(type.id))
             .map(type => {
                 let data = statistic.filter(item => item['type_id'] === type.id) as DefaultDataPoint<any>
-                if (type.axis_type === 'binary') {
-                    data = data.map(item => {
-                        if (typeof item.estimation === 'number') {
-                            item.estimation = item.estimation > 0 ? 'да' : 'нет'
-                        }
-                        return item
-                    })
-                }
                 const item: ChartDataset<'line'> = {
                     yAxisID: type.axis_type,
                     label: type.name,
                     borderColor: type.color,
                     backgroundColor: type.color,
                     tension: 0.4,
+                    borderWidth: 2,
+                    fill: false,
                     data: data,
-                    showLine: type.axis_type !== 'notes',
+                    pointBackgroundColor: (context) => {
+                        const index: number = context.dataIndex
+                        const value: any = context.dataset.data[index]
+                        return type.axis_type.startsWith('binary') && value?.estimation === 0
+                            ? '#ffffff'
+                            : type.color
+                    },
+                    showLine: type.show_line,
                     parsing: {
                         xAxisKey: 'date' as const,
                         yAxisKey: 'estimation' as const
@@ -224,7 +225,8 @@ function App() {
                     id: 'basic_' + item['type_id'],
                     name: item['name'],
                     color: item.color || stc(item['name'] + ' pink!'),
-                    axis_type: 'y'
+                    axis_type: 'y',
+                    show_line: true
                 }
             })
     }
@@ -237,7 +239,8 @@ function App() {
                     id: 'custom_' + slug(item),
                     name: item,
                     color: stc(slug(item) + ' foo'),
-                    axis_type: 'y'
+                    axis_type: 'y',
+                    show_line: true
                 }
             })
     }
@@ -250,7 +253,8 @@ function App() {
                     id: 'binary_' + slug(item),
                     name: item,
                     color: stc(slug(item) + ' bar'),
-                    axis_type: 'binary'
+                    axis_type: 'binary_' + slug(item),
+                    show_line: false
                 }
             })
     }
@@ -369,7 +373,8 @@ function App() {
                             id: 'note',
                             name: 'Заметки',
                             color: '#71aaeb',
-                            axis_type: 'notes'
+                            axis_type: 'notes',
+                            show_line: false
                         }
                     ])
                     userStatments = userStatments.concat(prepareNoteStatistics(dairyNotes.data.notes))

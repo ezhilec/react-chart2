@@ -6,7 +6,8 @@ export interface TypesData {
     axis_type: string;
     id: string,
     name: string,
-    color: string
+    color: string,
+    show_line: boolean
 }
 
 interface TypesInputProps {

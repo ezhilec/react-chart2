@@ -7,6 +7,7 @@ import {ChartData, ScatterDataPoint} from "chart.js";
 import {MouseEvent, useRef} from "react";
 import type {InteractionItem} from 'chart.js';
 import moment from "moment";
+import slug from "slug";
 
 interface ChartProps {
     loading: boolean,
@@ -52,35 +53,38 @@ function Chart(props: ChartProps) {
         }
     }
 
-    if (props.chartData && props.chartData.datasets.some(item => item.yAxisID === 'binary')) {
-        scales.binary = {
-            type: 'category' as const,
-            labels: ['да', 'нет'],
-            position: 'left' as const,
-            border: {
-                display: false
-            },
-            offset: true,
-            stack: 'stack',
-            stackWeight: 3,
-            ticks: {
-                stepSize: 1,
-                autoSkip: false,
+    if (props.chartData && props.chartData.datasets.some(item => item.yAxisID?.startsWith('binary'))) {
+        const binaryLabels: string[] = props.chartData.datasets
+            .filter(item => item.yAxisID?.startsWith('binary'))
+            .map(item => item.label as string)
+        const uniqueBinaryLabels: string[] = Array.from(new Set(binaryLabels));
+
+        uniqueBinaryLabels.forEach(label => {
+            scales['binary_' + slug(label)] = {
+                type: 'category' as const,
+                labels: [label],
+                position: 'left' as const,
+                border: {
+                    display: false
+                },
+                offset: true,
+                stack: 'stack',
+                stackWeight: 1,
             }
-        }
+        })
     }
 
     if (props.chartData && props.chartData.datasets.some(item => item.yAxisID === 'notes')) {
         scales.notes = {
             type: 'category' as const,
-            labels: ['заметки'],
+            labels: ['Заметки'],
             position: 'left' as const,
             border: {
                 display: false
             },
             offset: true,
             stack: 'stack',
-            stackWeight: 2,
+            stackWeight: 1,
         }
     }
 
@@ -88,10 +92,16 @@ function Chart(props: ChartProps) {
         responsive: true,
         plugins: {
             tooltip: {
+                enabled: true,
                 callbacks: {
                     label: function (context: any) {
-                        return context.raw.estimation
-                            ? context.dataset.label + ': ' + context.raw.estimation
+                        let value = context.raw.estimation
+                        if (context.raw.type_id.startsWith('binary')) {
+                            value = value ? 'да' : 'нет'
+                        }
+
+                        return context.raw.estimation !== null
+                            ? context.dataset.label + ': ' + value
                             : '';
                     }
                 }
