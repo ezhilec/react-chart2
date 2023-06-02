@@ -19,8 +19,8 @@ import 'moment/locale/ru'
 import stc from 'string-to-color'
 import Chart from './Chart'
 import DateInput from './DateInput'
-import TypesInput, {TypesData} from './TypesInput'
 import slug from 'slug'
+import TypesFilter from "./TypesFilter";
 
 moment.locale('ru')
 
@@ -84,6 +84,14 @@ interface StatementTypesData {
 
 interface NotesObjectData {
     [key: string]: Object[]
+}
+
+export interface TypesData {
+    axis_type: string;
+    id: string,
+    name: string,
+    color: string,
+    show_line: boolean
 }
 
 declare global {
@@ -383,10 +391,10 @@ function App() {
                 if (userStatments.length) {
                     const existingStatementTypes = statementsTypes
                         .filter(type => userStatments.map(statement => statement.type_id).includes(type.id))
-                        .map(item => item.id)
 
-                    setTypes(statementsTypes)
-                    setSelectedTypes(existingStatementTypes)
+                    //setTypes(statementsTypes)
+                    setTypes(existingStatementTypes)
+                    setSelectedTypes(existingStatementTypes.map(item => item.id))
                     setStatistic(userStatments)
                 } else {
                     setError('Статистики за период нет')
@@ -400,10 +408,6 @@ function App() {
         })
     }
 
-    const handleSelectedTypesChange = (value: ReadonlyArray<TypesData>) => {
-        setSelectedTypes(value.map(item => item.id));
-    };
-
     return (
         <div className="app">
             <div className="app__block filters">
@@ -414,11 +418,11 @@ function App() {
                         handleSubmit={handleSubmit}
                     />
                 </div>
-                <div className="filters__types">
-                    <TypesInput
+                <div className="filters__types-filter">
+                    <TypesFilter
                         types={types}
                         selectedTypes={selectedTypes}
-                        handleSelectedTypesChange={handleSelectedTypesChange}
+                        handleSelectedTypesChange={setSelectedTypes}
                     />
                 </div>
             </div>

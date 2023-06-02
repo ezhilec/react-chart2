@@ -59,10 +59,11 @@ function Chart(props: ChartProps) {
             .map(item => item.label as string)
         const uniqueBinaryLabels: string[] = Array.from(new Set(binaryLabels));
 
-        uniqueBinaryLabels.forEach(label => {
+        uniqueBinaryLabels.forEach((label: string, index: number) => {
+            const customLabel = `# ${binaryLabels.length - index}`
             scales['binary_' + slug(label)] = {
                 type: 'category' as const,
-                labels: [label],
+                labels: [customLabel],
                 position: 'left' as const,
                 border: {
                     display: false
@@ -77,7 +78,7 @@ function Chart(props: ChartProps) {
     if (props.chartData && props.chartData.datasets.some(item => item.yAxisID === 'notes')) {
         scales.notes = {
             type: 'category' as const,
-            labels: ['Заметки'],
+            labels: ['✏️'],
             position: 'left' as const,
             border: {
                 display: false

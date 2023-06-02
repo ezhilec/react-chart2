@@ -1,14 +1,8 @@
 import * as React from "react";
 import Select, {StylesConfig} from "react-select";
 import chroma from 'chroma-js';
-
-export interface TypesData {
-    axis_type: string;
-    id: string,
-    name: string,
-    color: string,
-    show_line: boolean
-}
+import stc from "string-to-color";
+import {TypesData} from "./App";
 
 interface TypesInputProps {
     types: TypesData[],
@@ -19,7 +13,7 @@ interface TypesInputProps {
 const colourStyles: StylesConfig<TypesData, true> = {
     control: (styles) => ({...styles, backgroundColor: 'white', boxShadow: 'none'}),
     option: (styles, {data, isDisabled, isFocused, isSelected}) => {
-        const color = chroma(data.color);
+        const color = chroma.valid(data.color) ? chroma(data.color) : chroma(stc(data.color));
         return {
             ...styles,
             backgroundColor: isDisabled
@@ -49,7 +43,7 @@ const colourStyles: StylesConfig<TypesData, true> = {
         };
     },
     multiValue: (styles, {data}) => {
-        const color = chroma(data.color);
+        const color = chroma.valid(data.color) ? chroma(data.color) : chroma(stc(data.color));
         return {
             ...styles,
             backgroundColor: color.alpha(0.1).css(),

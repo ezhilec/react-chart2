@@ -101,6 +101,48 @@ body, html, #root {
   box-sizing: border-box;
   cursor: pointer;
 }
+.filters__types-filter {
+  margin: 16px -3px -3px;
+}
+.filters__types-filter-scroll {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  user-select: none;
+}
+.filters__types-filter-scroll_active {
+  cursor: grabbing;
+}
+.filters__types-filter-scroll_active .filters__types-filter-item {
+  cursor: grabbing;
+}
+.filters__types-filter-wrapper {
+  width: 130%;
+  padding: 10px 0 10px 0;
+}
+.filters__types-filter-item {
+  padding: 4px 8px;
+  background-color: #ffffff;
+  border: 1px solid currentColor;
+  border-radius: 15px;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 8px;
+  display: inline-block;
+  font-size: 13px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.filters__types-filter-item span {
+  color: currentColor;
+}
+.filters__types-filter-item_active {
+  background-color: currentColor;
+  border: 1px solid currentColor;
+}
+.filters__types-filter-item_active span {
+  color: #ffffff;
+}
 @media screen and (max-width: 375px) {
   .filters__types-item {
     padding: 4px 4px;
