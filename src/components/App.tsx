@@ -100,6 +100,26 @@ declare global {
     }
 }
 
+const typeColors: { [key: string]: string } = {
+    'Тревога': '#FE5667',
+    'Настроение': '#FFE090',
+    'Продуктивность': '#00B1BB',
+    'Ясность сознания': '#40A6EB',
+    'Агрессивность': '#FF9649',
+    'Плаксивость': '#6F8FFE',
+    'Либидо': '#FF60A8',
+    'Энергия': '#5FCA77',
+    'Общее состояние': '#D0F3A3'
+}
+
+const customTypesColors: string[] = [
+    '#F7A2D5',
+    '#CAB2D6',
+    '#A6CEE3',
+    '#FF828F',
+    '#4ED092'
+]
+
 function App() {
     const [userId, setUserId] = React.useState<number | null>(null)
     const [dateRange, setDateRange] = React.useState<Array<string | Date>>([
@@ -232,7 +252,7 @@ function App() {
                 return {
                     id: 'basic_' + item['type_id'],
                     name: item['name'],
-                    color: item.color || stc(item['name'] + ' pink!'),
+                    color: typeColors[item['name']] || item.color || stc(item['name'] + ' pink!'),
                     axis_type: 'y',
                     show_line: true
                 }
@@ -242,11 +262,11 @@ function App() {
     const prepareCustomStatementsTypes = (statementTypes: string[]): TypesData[] => {
         return statementTypes
             .filter(item => item)
-            .map(item => {
+            .map((item, index) => {
                 return {
                     id: 'custom_' + slug(item),
                     name: item,
-                    color: stc(slug(item) + ' foo'),
+                    color: customTypesColors[index] || stc(slug(item) + ' foo'),
                     axis_type: 'y',
                     show_line: true
                 }
@@ -392,7 +412,6 @@ function App() {
                     const existingStatementTypes = statementsTypes
                         .filter(type => userStatments.map(statement => statement.type_id).includes(type.id))
 
-                    //setTypes(statementsTypes)
                     setTypes(existingStatementTypes)
                     setSelectedTypes(existingStatementTypes.map(item => item.id))
                     setStatistic(userStatments)
