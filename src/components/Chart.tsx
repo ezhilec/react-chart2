@@ -1,11 +1,8 @@
-import {
-    Line,
-    getElementAtEvent,
-} from "react-chartjs-2";
+import {getElementAtEvent, Line} from "react-chartjs-2";
 import * as React from "react";
-import {ChartData, ScatterDataPoint} from "chart.js";
 import {MouseEvent, useRef} from "react";
 import type {InteractionItem} from 'chart.js';
+import {ChartData, ScatterDataPoint, TooltipItem} from "chart.js";
 import moment from "moment";
 import slug from "slug";
 
@@ -50,6 +47,7 @@ function Chart(props: ChartProps) {
                 stepSize: 1,
                 autoSkip: false,
             },
+            weight: 100
         }
     }
 
@@ -71,6 +69,7 @@ function Chart(props: ChartProps) {
                 offset: true,
                 stack: 'stack',
                 stackWeight: 1,
+                weight: 200 + index
             }
         })
     }
@@ -86,6 +85,7 @@ function Chart(props: ChartProps) {
             offset: true,
             stack: 'stack',
             stackWeight: 1,
+            weight: 300
         }
     }
 
@@ -94,6 +94,8 @@ function Chart(props: ChartProps) {
         plugins: {
             tooltip: {
                 enabled: true,
+                mode: "x" as const,
+                intersect: false,
                 callbacks: {
                     label: function (context: any) {
                         let value = context.raw.estimation
@@ -105,7 +107,20 @@ function Chart(props: ChartProps) {
                             ? context.dataset.label + ': ' + value
                             : '';
                     }
-                }
+                },
+                external: (context: any) => {
+                    const tooltip = context.tooltip as TooltipItem<'line'>;
+                    const position = chartRef.current?.canvas.getBoundingClientRect();
+
+                    if (!position || !tooltip) {
+                        hideTooltip();
+                        return;
+                    }
+
+                    // Show tooltip
+                    showTooltip(tooltip, position);
+                },
+
             }
         },
         maintainAspectRatio: false,
@@ -127,15 +142,52 @@ function Chart(props: ChartProps) {
     };
 
     const chartRef = useRef<any>(null);
+    const tooltipRef = useRef<any>(null);
 
     const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
         const {current: chart} = chartRef;
+
+        props.setSelectedDate(null)
 
         if (!chart) {
             return;
         }
 
         printElementAtEvent(getElementAtEvent(chart, event));
+    };
+
+    const showTooltip = (tooltip: any, position: DOMRect) => {
+        const tooltipEl = tooltipRef.current;
+
+        if (!tooltipEl) return;
+
+        const left = position.left + window.pageXOffset + tooltip.x;
+        const top = position.top + window.pageYOffset + tooltip.caretY;
+        // const left = position.left + window.pageXOffset.caretX;
+        // const top = position.top + window.pageYOffset.caretY;
+
+        tooltipEl.style.opacity = '1';
+        tooltipEl.style.left = `${left}px`;
+        // tooltipEl.style.top = `${top}px`;
+        tooltipEl.style.top = `100%`;
+
+        const tooltipContent = tooltip.body.map((bodyItem: any) => {
+            const backgroundColor = bodyItem.backgroundColor;
+            const pointStyle = bodyItem.pointStyle;
+            const contentLines = bodyItem.lines.map((line: any) => `<span>${line}</span>`).join('');
+            const icon = `<span class="tooltip-icon" style="background-color: ${backgroundColor};">${pointStyle}</span>`;
+            return `<div>${icon}${contentLines}</div>`;
+        });
+
+        tooltipEl.innerHTML = `<div>Date: ${tooltip.label}</div><div>Value: ${tooltip.formattedValue}</div><div>${tooltipContent.join('')}</div>`;
+    };
+
+    const hideTooltip = () => {
+        const tooltipEl = tooltipRef.current;
+
+        if (!tooltipEl) return;
+
+        tooltipEl.style.opacity = '0';
     };
 
     if (props.loading) {
@@ -154,6 +206,7 @@ function Chart(props: ChartProps) {
                 ref={chartRef}
                 onClick={onClick}
             />
+            <div ref={tooltipRef} className="custom-tooltip"/>
         </div>
     }
 

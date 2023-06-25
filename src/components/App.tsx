@@ -117,7 +117,15 @@ const customTypesColors: string[] = [
     '#CAB2D6',
     '#A6CEE3',
     '#FF828F',
-    '#4ED092'
+    '#4ED0B9'
+]
+
+const binaryTypesColors: string[] = [
+    '#EDCEF2',
+    '#ACAFFF',
+    '#82C3FF',
+    '#FFD2C8',
+    '#CDEBA7'
 ]
 
 function App() {
@@ -276,11 +284,11 @@ function App() {
     const prepareBinaryStatementsTypes = (statementTypes: string[]): TypesData[] => {
         return statementTypes
             .filter(item => item)
-            .map(item => {
+            .map((item, index) => {
                 return {
                     id: 'binary_' + slug(item),
                     name: item,
-                    color: stc(slug(item) + ' bar'),
+                    color: binaryTypesColors[index] || stc(slug(item) + ' bar'),
                     axis_type: 'binary_' + slug(item),
                     show_line: false
                 }

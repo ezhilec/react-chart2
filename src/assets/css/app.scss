@@ -137,7 +137,7 @@ body, html, #root {
     border-radius: 15px;
     margin-left: 3px;
     margin-right: 3px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     display: inline-block;
     font-size: 13px;
     box-sizing: border-box;
@@ -235,4 +235,10 @@ body, html, #root {
 
 .notes {
   padding-bottom: 20px;
+}
+
+.custom-tooltip {
+  position: absolute;
+  border: red;
+  display: none;
 }
