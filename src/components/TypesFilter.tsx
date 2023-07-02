@@ -18,7 +18,7 @@ function TypesFilter(props: TypesFilterProps) {
     const onMouseDown = (e: any) => {
         if (ref.current) {
             setIsScrolling(true);
-            setStartX(e.pageX - ref.current.offsetLeft);
+            setStartX((e.pageX || e.changedTouches[0].pageX) - ref.current.offsetLeft);
             setScrollX(ref.current.scrollLeft);
             setScrollXLastMove(ref.current.scrollLeft);
         }
@@ -40,10 +40,10 @@ function TypesFilter(props: TypesFilterProps) {
 
     const onMouseMove = (e: any) => {
         if (isScrolling && ref.current) {
-            e.preventDefault()
-            const x = e.pageX - ref.current.offsetLeft;
+            const x = (e.pageX || e.changedTouches[0].pageX) - ref.current.offsetLeft;
             const fastCoefficient = 1;
             const walk = (x - startX) * fastCoefficient;
+
             ref.current.scrollLeft = scrollX - walk;
         }
     };
