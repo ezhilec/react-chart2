@@ -15,7 +15,7 @@ function TypesFilter(props: TypesFilterProps) {
     const [scrollX, setScrollX] = useState(0);
     const [scrollXLastMove, setScrollXLastMove] = useState(0);
 
-    const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const onMouseDown = (e: any) => {
         if (ref.current) {
             setIsScrolling(true);
             setStartX(e.pageX - ref.current.offsetLeft);
@@ -38,7 +38,7 @@ function TypesFilter(props: TypesFilterProps) {
         }
     };
 
-    const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const onMouseMove = (e: any) => {
         if (isScrolling && ref.current) {
             e.preventDefault()
             const x = e.pageX - ref.current.offsetLeft;
@@ -83,6 +83,10 @@ function TypesFilter(props: TypesFilterProps) {
                 onMouseUp={onMouseUp}
                 onMouseMove={onMouseMove}
                 onMouseLeave={onMouseLeave}
+                onTouchStart={onMouseDown}
+                onTouchEnd={onMouseUp}
+                onTouchMove={onMouseMove}
+                onTouchCancel={onMouseLeave}
         >
         <div className={'filters__types-filter-wrapper'}>
             {items}

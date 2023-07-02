@@ -11,11 +11,20 @@
 
 body, html, #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  background: url("../img/white-pixel.gif") repeat;
 }
 
 .app {
   font-family: Roboto, sans-serif;
-  background: #fff url("../img/app-background.jpg") no-repeat top left;
+  background-color: #fff !important;
+  background-image: url("../img/app-background.jpg");
+  background-repeat: no-repeat;
+  background-position: top left;
   background-size: contain;
   padding: 25px 15px;
   height: 100%;
@@ -66,6 +75,8 @@ body, html, #root {
 }
 .filters__date-input .react-daterange-picker__inputGroup {
   flex-grow: 0;
+  display: flex;
+  align-items: baseline;
 }
 .filters__date-input .react-daterange-picker__inputGroup__input:focus-visible {
   outline: none;
