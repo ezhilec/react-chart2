@@ -10,7 +10,8 @@ interface ChartProps {
     loading: boolean,
     error: string | null,
     chartData: ChartData<'line'> | null,
-    setSelectedDate: Function
+    setSelectedDate: Function,
+    notes: { [key: string]: string[] }
 }
 
 function Chart(props: ChartProps) {
@@ -93,21 +94,21 @@ function Chart(props: ChartProps) {
         responsive: true,
         plugins: {
             tooltip: {
-                enabled: true,
+                enabled: false,
                 mode: "x" as const,
                 intersect: false,
-                callbacks: {
-                    label: function (context: any) {
-                        let value = context.raw.estimation
-                        if (context.raw.type_id.startsWith('binary')) {
-                            value = value ? 'да' : 'нет'
-                        }
-
-                        return context.raw.estimation !== null
-                            ? context.dataset.label + ': ' + value
-                            : '';
-                    }
-                },
+                // callbacks: {
+                //     label: function (context: any) {
+                //         let value = context.raw.estimation
+                //         if (context.raw.type_id.startsWith('binary')) {
+                //             value = value ? 'да' : 'нет'
+                //         }
+                //
+                //         return context.raw.estimation !== null
+                //             ? context.dataset.label + ': ' + value
+                //             : '';
+                //     }
+                // },
                 external: (context: any) => {
                     const tooltip = context.tooltip as TooltipItem<'line'>;
                     const position = chartRef.current?.canvas.getBoundingClientRect();
@@ -117,7 +118,6 @@ function Chart(props: ChartProps) {
                         return;
                     }
 
-                    // Show tooltip
                     showTooltip(tooltip, position);
                 },
 
@@ -147,11 +147,11 @@ function Chart(props: ChartProps) {
     const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
         const {current: chart} = chartRef;
 
-        props.setSelectedDate(null)
-
         if (!chart) {
             return;
         }
+
+        props.setSelectedDate(null)
 
         printElementAtEvent(getElementAtEvent(chart, event));
     };
@@ -161,25 +161,35 @@ function Chart(props: ChartProps) {
 
         if (!tooltipEl) return;
 
-        const left = position.left + window.pageXOffset + tooltip.x;
-        const top = position.top + window.pageYOffset + tooltip.caretY;
-        // const left = position.left + window.pageXOffset.caretX;
-        // const top = position.top + window.pageYOffset.caretY;
+        const tooltipContent = tooltip.dataPoints?.map((bodyItem: any) => {
+            const backgroundColor = bodyItem.dataset.backgroundColor;
+            const icon = `<span class="tooltip-icon" style="background-color: ${backgroundColor}; width: 15px; height: 15px; display: inline-block"></span>`;
+            const label = bodyItem.dataset.label;
 
-        tooltipEl.style.opacity = '1';
-        tooltipEl.style.left = `${left}px`;
-        // tooltipEl.style.top = `${top}px`;
-        tooltipEl.style.top = `100%`;
+            let value = bodyItem.raw.estimation
+            if (bodyItem.raw.type_id.startsWith('binary')) {
+                value = value ? 'да' : 'нет'
+            }
 
-        const tooltipContent = tooltip.body.map((bodyItem: any) => {
-            const backgroundColor = bodyItem.backgroundColor;
-            const pointStyle = bodyItem.pointStyle;
-            const contentLines = bodyItem.lines.map((line: any) => `<span>${line}</span>`).join('');
-            const icon = `<span class="tooltip-icon" style="background-color: ${backgroundColor};">${pointStyle}</span>`;
-            return `<div>${icon}${contentLines}</div>`;
+            return `<div>${icon} ${label}: ${value}</div>`;
         });
 
-        tooltipEl.innerHTML = `<div>Date: ${tooltip.label}</div><div>Value: ${tooltip.formattedValue}</div><div>${tooltipContent.join('')}</div>`;
+        const date = tooltip.title[0]
+        const dateKey = moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD')
+
+        tooltipEl.innerHTML = `
+            <h2>${date}</h2>
+            <div>${tooltipContent.join('')}</div>
+        `;
+
+        if (props.notes[dateKey]) {
+            tooltipEl.innerHTML += `<h2>Заметки</h2>`
+            props.notes[dateKey].forEach(item => {
+                tooltipEl.innerHTML += `<p>${item}</p>`
+            })
+        }
+
+        tooltipEl.scrollTo(0, 1);
     };
 
     const hideTooltip = () => {
@@ -199,15 +209,17 @@ function Chart(props: ChartProps) {
     }
 
     if (props.chartData) {
-        return <div className="app__block chart">
-            <Line
-                options={chartOptions}
-                data={props.chartData}
-                ref={chartRef}
-                onClick={onClick}
-            />
+        return <>
+            <div className="app__block chart">
+                <Line
+                    options={chartOptions}
+                    data={props.chartData}
+                    ref={chartRef}
+                    onClick={onClick}
+                />
+            </div>
             <div ref={tooltipRef} className="custom-tooltip"/>
-        </div>
+        </>
     }
 
     return <div className="app__block chart_empty">Здесь появится график</div>

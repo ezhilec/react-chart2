@@ -249,7 +249,6 @@ body, html, #root {
 }
 
 .custom-tooltip {
-  position: absolute;
-  border: red;
-  display: none;
+  position: relative;
+  padding-bottom: 20px;
 }

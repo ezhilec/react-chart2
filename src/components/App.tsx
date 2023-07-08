@@ -458,13 +458,8 @@ function App() {
                 error={error}
                 chartData={chartData}
                 setSelectedDate={setSelectedDate}
+                notes={notes}
             />
-            {selectedDate !== null &&
-              <div className={'notes'}>
-                <h4>Заметки за {moment(selectedDate).format('DD.MM.YYYY')}</h4>
-                {notes[selectedDate] && notes[selectedDate].map((item: string) => <p>{item}</p>)}
-              </div>
-            }
         </div>
     )
 }
