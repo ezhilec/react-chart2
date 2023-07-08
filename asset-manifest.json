@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/react-chart2/static/css/main.7e258dea.css",
-    "main.js": "/react-chart2/static/js/main.29754440.js",
+    "main.css": "/react-chart2/static/css/main.264997f2.css",
+    "main.js": "/react-chart2/static/js/main.3c95e5cf.js",
     "static/media/submit.svg": "/react-chart2/static/media/submit.028880192ef12a143fec.svg",
     "index.html": "/react-chart2/index.html",
-    "main.7e258dea.css.map": "/react-chart2/static/css/main.7e258dea.css.map",
-    "main.29754440.js.map": "/react-chart2/static/js/main.29754440.js.map"
+    "main.264997f2.css.map": "/react-chart2/static/css/main.264997f2.css.map",
+    "main.3c95e5cf.js.map": "/react-chart2/static/js/main.3c95e5cf.js.map"
   },
   "entrypoints": [
-    "static/css/main.7e258dea.css",
-    "static/js/main.29754440.js"
+    "static/css/main.264997f2.css",
+    "static/js/main.3c95e5cf.js"
   ]
 }
