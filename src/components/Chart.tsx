@@ -178,12 +178,12 @@ function Chart(props: ChartProps) {
         const dateKey = moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD')
 
         tooltipEl.innerHTML = `
-            <h2>${date}</h2>
+            <h3>${date}</h3>
             <div>${tooltipContent.join('')}</div>
         `;
 
         if (props.notes[dateKey]) {
-            tooltipEl.innerHTML += `<h2>Заметки</h2>`
+            tooltipEl.innerHTML += `<h3>Заметки</h3>`
             props.notes[dateKey].forEach(item => {
                 tooltipEl.innerHTML += `<p>${item}</p>`
             })
