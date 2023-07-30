@@ -141,7 +141,6 @@ function App() {
     const [chartData, setChartData] = React.useState<ChartData<'line'> | null>(null)
     const [error, setError] = React.useState<string | null>(null)
     const [loading, setLoading] = React.useState<boolean>(false)
-    const [selectedDate, setSelectedDate] = React.useState<string | null>(null)
 
     useEffect(() => {
         defineUser()
@@ -421,7 +420,9 @@ function App() {
                         .filter(type => userStatments.map(statement => statement.type_id).includes(type.id))
 
                     setTypes(existingStatementTypes)
-                    setSelectedTypes(existingStatementTypes.map(item => item.id))
+                    if (!selectedTypes.length) {
+                        setSelectedTypes(existingStatementTypes.map(item => item.id))
+                    }
                     setStatistic(userStatments)
                 } else {
                     setError('Статистики за период нет')
@@ -457,7 +458,6 @@ function App() {
                 loading={loading}
                 error={error}
                 chartData={chartData}
-                setSelectedDate={setSelectedDate}
                 notes={notes}
             />
         </div>

@@ -164,7 +164,6 @@ body, html, #root {
 
 .chart {
   z-index: 1;
-  min-height: 340px;
   padding: 10px;
 }
 .chart_empty {

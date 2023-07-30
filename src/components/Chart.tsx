@@ -1,8 +1,7 @@
-import {getElementAtEvent, Line} from "react-chartjs-2";
+import {Line} from "react-chartjs-2";
 import * as React from "react";
-import {MouseEvent, useRef} from "react";
-import type {InteractionItem} from 'chart.js';
-import {ChartData, ScatterDataPoint, TooltipItem} from "chart.js";
+import {useEffect, useRef, useState} from "react";
+import {ChartData, TooltipItem} from "chart.js";
 import moment from "moment";
 import slug from "slug";
 
@@ -10,12 +9,16 @@ interface ChartProps {
     loading: boolean,
     error: string | null,
     chartData: ChartData<'line'> | null,
-    setSelectedDate: Function,
     notes: { [key: string]: string[] }
 }
 
 function Chart(props: ChartProps) {
 
+    const chartMinHeight = 200
+    const scaleHeight = 27
+    const [chartHeight, setChartHeight] = useState(chartMinHeight)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const scales: { [key: string]: any } = {
         x: {
             type: 'time' as const,
@@ -94,105 +97,80 @@ function Chart(props: ChartProps) {
         responsive: true,
         plugins: {
             tooltip: {
-                enabled: false,
+                enabled: true,
                 mode: "x" as const,
                 intersect: false,
-                // callbacks: {
-                //     label: function (context: any) {
-                //         let value = context.raw.estimation
-                //         if (context.raw.type_id.startsWith('binary')) {
-                //             value = value ? 'да' : 'нет'
-                //         }
-                //
-                //         return context.raw.estimation !== null
-                //             ? context.dataset.label + ': ' + value
-                //             : '';
-                //     }
-                // },
+                callbacks: {
+                    label: function (context: any) {
+                        let value = context.raw.estimation
+                        if (context.raw.type_id.startsWith('binary')) {
+                            value = value ? 'да' : 'нет'
+                        }
+
+                        return context.raw.estimation !== null
+                            ? context.dataset.label + ': ' + value
+                            : '';
+                    }
+                },
                 external: (context: any) => {
                     const tooltip = context.tooltip as TooltipItem<'line'>;
                     const position = chartRef.current?.canvas.getBoundingClientRect();
 
                     if (!position || !tooltip) {
-                        hideTooltip();
+                        hideExtraTooltip();
                         return;
                     }
 
-                    showTooltip(tooltip, position);
+                    showExtraTooltip(tooltip);
                 },
 
             }
         },
         maintainAspectRatio: false,
         scales,
-        interaction: {
-            mode: 'index' as const,
-            intersect: false,
-        },
     }
 
-    const printElementAtEvent = (element: InteractionItem[]) => {
-        if (!element.length) return;
-        const {datasetIndex, index} = element[0];
-        const clickedDate: ScatterDataPoint | number | null | undefined = props.chartData?.datasets[datasetIndex]?.data[index];
-        if (typeof clickedDate !== 'number' && clickedDate) {
-            // @ts-ignore
-            props.setSelectedDate(clickedDate ? moment(clickedDate["date"]).format('YYYY-MM-DD') : null)
-        }
-    };
+    const yGridCount = (scales: { [x: string]: any; }) => {
+        let count = 0
+        Object.keys(scales).forEach((scale) => {
+            if (scale === 'y') {
+                count += 10
+            } else if (scale === 'x') {
+                return
+            } else {
+                count++
+            }
+        })
+
+        return count
+    }
+
+    useEffect(() => {
+        setChartHeight(Math.max(chartMinHeight, yGridCount(scales) * scaleHeight))
+    }, [props.chartData, scaleHeight, scales])
 
     const chartRef = useRef<any>(null);
     const tooltipRef = useRef<any>(null);
 
-    const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
-        const {current: chart} = chartRef;
-
-        if (!chart) {
-            return;
-        }
-
-        props.setSelectedDate(null)
-
-        printElementAtEvent(getElementAtEvent(chart, event));
-    };
-
-    const showTooltip = (tooltip: any, position: DOMRect) => {
+    const showExtraTooltip = (tooltip: any) => {
         const tooltipEl = tooltipRef.current;
 
-        if (!tooltipEl) return;
-
-        const tooltipContent = tooltip.dataPoints?.map((bodyItem: any) => {
-            const backgroundColor = bodyItem.dataset.backgroundColor;
-            const icon = `<span class="tooltip-icon" style="background-color: ${backgroundColor}; width: 15px; height: 15px; display: inline-block"></span>`;
-            const label = bodyItem.dataset.label;
-
-            let value = bodyItem.raw.estimation
-            if (bodyItem.raw.type_id.startsWith('binary')) {
-                value = value ? 'да' : 'нет'
-            }
-
-            return `<div>${icon} ${label}: ${value}</div>`;
-        });
+        if (!tooltipEl || !tooltip || !tooltip.title) return;
 
         const date = tooltip.title[0]
         const dateKey = moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD')
 
-        tooltipEl.innerHTML = `
-            <h3>${date}</h3>
-            <div>${tooltipContent.join('')}</div>
-        `;
+        tooltipEl.innerHTML = ''
 
         if (props.notes[dateKey]) {
-            tooltipEl.innerHTML += `<h3>Заметки</h3>`
+            tooltipEl.innerHTML += `<h3>Заметки за ${date}</h3>`
             props.notes[dateKey].forEach(item => {
                 tooltipEl.innerHTML += `<p>${item}</p>`
             })
         }
-
-        tooltipEl.scrollTo(0, 1);
     };
 
-    const hideTooltip = () => {
+    const hideExtraTooltip = () => {
         const tooltipEl = tooltipRef.current;
 
         if (!tooltipEl) return;
@@ -210,12 +188,11 @@ function Chart(props: ChartProps) {
 
     if (props.chartData) {
         return <>
-            <div className="app__block chart">
+            <div className="app__block chart" style={{height: chartHeight}}>
                 <Line
                     options={chartOptions}
                     data={props.chartData}
                     ref={chartRef}
-                    onClick={onClick}
                 />
             </div>
             <div ref={tooltipRef} className="custom-tooltip"/>
