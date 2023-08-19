@@ -97,6 +97,7 @@ function Chart(props: ChartProps) {
         responsive: true,
         plugins: {
             tooltip: {
+                events: ["click"],
                 enabled: true,
                 mode: "x" as const,
                 intersect: false,

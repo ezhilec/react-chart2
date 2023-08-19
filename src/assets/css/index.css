@@ -165,6 +165,7 @@ body, html, #root {
 .chart {
   z-index: 1;
   padding: 10px;
+  transition: height 0.35s;
 }
 .chart_empty {
   text-align: center;
